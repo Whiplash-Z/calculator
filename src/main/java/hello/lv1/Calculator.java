@@ -63,8 +63,7 @@ public class Calculator {
             if (e.getMessage().equals("EXIT_REQUESTED")) {
                 System.out.println("계산기를 종료합니다.");
             }
-        }
-        finally {
+        } finally {
             // 프로그램 종료 전 리소스 정리
             scanner.close();
             System.out.println("리소스를 정리합니다.");

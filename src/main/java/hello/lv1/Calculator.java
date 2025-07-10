@@ -13,22 +13,14 @@ public class Calculator {
                 // 첫 번째 숫자 입력
                 long firstInput = getPositiveNumber(scanner, "첫 번째 숫자를 입력하세요: ");
 
+                // 연산자 입력
+                char operationSymbol = getOperationInput(scanner, "사칙연산 기호를 입력하세요: ");
+
                 // 두 번째 숫자 입력
                 long secondInput = getPositiveNumber(scanner, "두 번째 숫자를 입력하세요: ");
 
-                System.out.print("사칙연산 기호를 입력하세요: ");
-                String operationInput = scanner.next();
 
-                // exit 체크
-                exitCheck(operationInput);
 
-                // 하나의 연산자만 입력되었는지 확인
-                if (operationInput.length() != 1) {
-                    System.out.println("하나의 연산자만 입력해주세요");
-                    continue;
-                }
-
-                char operationSymbol = operationInput.charAt(0);
 
                 // 사칙연산 수행
                 switch (operationSymbol) {
@@ -68,6 +60,28 @@ public class Calculator {
             scanner.close();
             System.out.println("리소스를 정리합니다.");
         }
+    }
+
+    private static char getOperationInput(Scanner scanner, String message) {
+        String operationInput;
+        while (true) {
+            System.out.print(message);
+            operationInput = scanner.next();
+
+            // exit 체크
+            exitCheck(operationInput);
+
+            // 하나의 연산자만 입력되었는지 확인
+            if (operationInput.length() != 1) {
+                System.out.println("하나의 연산자만 입력해주세요");
+                continue;
+            }
+            break;
+        }
+
+
+        return operationInput.charAt(0);
+
     }
 
 

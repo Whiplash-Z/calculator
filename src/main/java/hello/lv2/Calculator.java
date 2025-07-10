@@ -114,7 +114,7 @@ public class Calculator {
         }
     }
 
-    private static void exitCheck(String input) {
+    private void exitCheck(String input) {
         if (input.equals("exit")) {
             throw new RuntimeException("EXIT_REQUESTED");
         }

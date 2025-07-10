@@ -74,10 +74,13 @@ public class Calculator {
                 System.out.println("하나의 연산자만 입력해주세요");
                 continue;
             }
+
+            if (Character.isLetter(operationInput.charAt(0))) {
+                System.out.println("연산자만 입력이 가능합니다.");
+                continue;
+            }
             break;
         }
-
-
         return operationInput.charAt(0);
 
     }

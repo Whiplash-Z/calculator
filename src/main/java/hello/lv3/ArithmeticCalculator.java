@@ -46,7 +46,7 @@ public class ArithmeticCalculator<T extends Number> {
                 );
     }
 
-    public void isRemoveOldestData(Scanner scanner, String message) {
+    public void askToRemoveOldestData(Scanner scanner, String message) {
         System.out.print(message);
         String isRemove = scanner.next();
         if (isRemove.equalsIgnoreCase("y")) {
@@ -156,7 +156,7 @@ public class ArithmeticCalculator<T extends Number> {
         }
     }
 
-    public void isSaved(Scanner scanner, T result, String message) {
+    public void askToSave(Scanner scanner, T result, String message) {
         System.out.print(message);
         String isSave = scanner.next();
         if (isSave.equalsIgnoreCase("y")) {

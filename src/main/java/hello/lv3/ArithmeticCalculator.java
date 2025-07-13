@@ -7,10 +7,15 @@ import java.util.ArrayDeque;
 import java.util.Queue;
 import java.util.Scanner;
 
-public class Calculator {
-    private final Queue<Double> queue = new ArrayDeque<>();
+public class ArithmeticCalculator<T extends Number> {
+    private final Queue<T> queue = new ArrayDeque<>();
+    private final Class<T> type;
 
-    public Queue<Double> getResults() {
+    public ArithmeticCalculator(Class<T> type) {
+        this.type = type;
+    }
+
+    public Queue<T> getResults() {
         return new ArrayDeque<>(queue); // 복사본을 반환해서 원본을 건들 수 없도록 캡슐화
     }
 
@@ -26,24 +31,43 @@ public class Calculator {
         }
     }
 
-    public double calculate(long firstInput, OperatorType operationSymbol, long secondInput) {
-        double result = 0;
+    @SuppressWarnings("unchecked")
+    public T calculate(T firstInput, OperatorType operationSymbol, T secondInput) {
+        Number result = 0;
+        double first = firstInput.doubleValue();
+        double second = secondInput.doubleValue();
 
         switch (operationSymbol) {
-            case PLUS -> result = firstInput + secondInput;
-            case MINUS -> result = firstInput - secondInput;
-            case MULTIPLY -> result = firstInput * secondInput;
+            case PLUS -> result = first + second;
+            case MINUS -> result = first - second;
+            case MULTIPLY -> result = first * second;
             case DIVIDE -> {
-                if (secondInput == 0) {
+                if (second == 0) {
                     throw new CalculatorException(ErrorMessage.CAN_NOT_BE_ZERO);
                 }
-                result = (double) firstInput / secondInput;
+                result = first / second;
             }
         }
-        return result;
+        return getResult(result);
+
     }
 
-    public long getPositiveNumber(Scanner scanner, String message) {
+    @SuppressWarnings("unchecked")
+    private T getResult(Number result) {
+        if (type == Integer.class) {
+            return (T) Integer.valueOf(result.intValue());
+        } else if (type == Long.class) {
+            return (T) Long.valueOf(result.longValue());
+        } else if (type == Double.class) {
+            return (T) Double.valueOf(result.doubleValue());
+        } else if (type == Float.class) {
+            return (T) Float.valueOf(result.floatValue());
+        }
+        throw new CalculatorException(ErrorMessage.NOT_SUPPORT_TYPE);
+    }
+
+    @SuppressWarnings("unchecked")
+    public T getPositiveNumber(Scanner scanner, String message) {
         while (true) {
             System.out.print(message);
             String input = scanner.next();
@@ -51,13 +75,8 @@ public class Calculator {
             exitCheck(input);
 
             try {
-                long number = Long.parseLong(input);
-
-                if (number < 0) {
-                    throw new CalculatorException(ErrorMessage.CAN_ONLY_POSITIVE_INTEGER);
-                }
-
-                return number;
+                Number number = getNumber(input);
+                return (T) number;
             } catch (RuntimeException e) {
                 if (e instanceof NumberFormatException) {
                     System.out.println(ErrorMessage.CAN_ONLY_WRITE_NUMBER.getMessage());
@@ -66,6 +85,27 @@ public class Calculator {
                 }
             }
         }
+    }
+
+    private Number getNumber(String input) {
+        Number number;
+
+        if (type == Integer.class) {
+            number = Integer.parseInt(input);
+        } else if (type == Long.class) {
+            number = Long.parseLong(input);
+        } else if (type == Float.class) {
+            number = Float.parseFloat(input);
+        } else if (type == Double.class) {
+            number = Double.parseDouble(input);
+        } else {
+            throw new CalculatorException(ErrorMessage.NOT_SUPPORT_TYPE);
+        }
+
+        if (number.doubleValue() < 0) {
+            throw new CalculatorException(ErrorMessage.CAN_ONLY_POSITIVE_NUMBER);
+        }
+        return number;
     }
 
     public OperatorType getOperatorInput(Scanner scanner, String message) {
@@ -89,7 +129,7 @@ public class Calculator {
         }
     }
 
-    public void isSave(Scanner scanner, double result, String message) {
+    public void isSaved(Scanner scanner, T result, String message) {
         System.out.print(message);
         String isSave = scanner.next();
         if (isSave.equalsIgnoreCase("y")) {

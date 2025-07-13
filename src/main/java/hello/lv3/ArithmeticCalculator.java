@@ -19,6 +19,33 @@ public class ArithmeticCalculator<T extends Number> {
         return new ArrayDeque<>(queue); // 복사본을 반환해서 원본을 건들 수 없도록 캡슐화
     }
 
+    public void printResultsGreaterThan(Scanner scanner) {
+        System.out.print("기준값을 입력하세요: ");
+        T referenceValue = getPositiveNumber(scanner, "");
+        System.out.println("===== 기준값보다 큰 값===== ");
+        queue.stream()
+                .filter(result -> result.doubleValue() > referenceValue.doubleValue())
+                .forEach(System.out::println);
+    }
+
+    public void printAverage() {
+        double average = queue.stream()
+                .mapToDouble(Number::doubleValue)
+                .average()
+                .orElse(0.0);
+        System.out.println("평균값: " + average);
+    }
+
+    public void printMaxValue() {
+        queue.stream()
+                .mapToDouble(Number::doubleValue)
+                .max()
+                .ifPresentOrElse(
+                        max -> System.out.println("최대값: " + max),
+                        () -> System.out.println("저장된 값이 없습니다.")
+                );
+    }
+
     public void isRemoveOldestData(Scanner scanner, String message) {
         System.out.print(message);
         String isRemove = scanner.next();

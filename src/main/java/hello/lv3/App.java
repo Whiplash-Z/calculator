@@ -17,12 +17,16 @@ public class App {
                 Double secondInput = calculator.getPositiveNumber(scanner, "두 번째 숫자를 입력하세요: ");
 
                 Double result = calculator.calculate(firstInput, operationSymbol, secondInput);
+                System.out.println("계산 결과: " + result);
 
                 calculator.isSaved(scanner, result, "값을 저장하시겠습니까? (y / n): ");
                 calculator.isRemoveOldestData(scanner, "가장 오래된 값을 삭제하시겠습니까? (y / n): ");
 
-                System.out.println("계산 결과: " + result);
                 System.out.println("저장 내역: " + calculator.getResults());
+                calculator.printAverage();
+                calculator.printMaxValue();
+                calculator.printResultsGreaterThan(scanner);
+
 
             } catch (RuntimeException e) {
                 System.out.println(e.getMessage());

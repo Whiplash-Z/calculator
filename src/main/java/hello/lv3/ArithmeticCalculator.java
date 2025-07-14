@@ -79,6 +79,11 @@ public class ArithmeticCalculator<T extends Number> {
 
     }
 
+
+    /**
+     * type 필드로 런타임에 타입이 보장된다.
+     * 같은 타입으로 캐스팅이 되므로 안전한 캐스팅이다.
+     */
     @SuppressWarnings("unchecked")
     private T getResult(Number result) {
         if (type == Integer.class) {
@@ -93,7 +98,6 @@ public class ArithmeticCalculator<T extends Number> {
         throw new CalculatorException(ErrorMessage.NOT_SUPPORT_TYPE);
     }
 
-    @SuppressWarnings("unchecked")
     public T getPositiveNumber(Scanner scanner, String message) {
         while (true) {
             System.out.print(message);
@@ -103,7 +107,7 @@ public class ArithmeticCalculator<T extends Number> {
 
             try {
                 Number number = getNumber(input);
-                return (T) number;
+                return castToType(number);
             } catch (RuntimeException e) {
                 if (e instanceof NumberFormatException) {
                     System.out.println(ErrorMessage.CAN_ONLY_WRITE_NUMBER.getMessage());
@@ -115,6 +119,16 @@ public class ArithmeticCalculator<T extends Number> {
             }
         }
     }
+
+    /**
+     * getNumber()에서 type에 맞는 Number 객체를 생성했으므로
+     * T 타입으로의 캐스팅이 안전함이 보장됨
+     */
+    @SuppressWarnings("unchecked")
+    private T castToType(Number number) {
+        return (T) number;
+    }
+
 
     private Number getNumber(String input) {
         Number number;

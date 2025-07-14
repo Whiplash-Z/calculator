@@ -109,6 +109,8 @@ public class ArithmeticCalculator<T extends Number> {
                     System.out.println(ErrorMessage.CAN_ONLY_WRITE_NUMBER.getMessage());
                 } else if (e instanceof CalculatorException exception) {
                     System.out.println(exception.getMessage());
+                } else {
+                    System.out.println(e.getMessage());
                 }
             }
         }

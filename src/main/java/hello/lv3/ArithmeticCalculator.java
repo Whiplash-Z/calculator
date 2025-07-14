@@ -166,8 +166,11 @@ public class ArithmeticCalculator<T extends Number> {
 
                 return OperatorType.fromChar(operatorType);
             } catch (RuntimeException e) {
+                if (e instanceof CalculatorException exception &&
+                        exception.getErrorMessage() == ErrorMessage.EXIT_REQUESTED) {
+                    throw new CalculatorException(ErrorMessage.EXIT_REQUESTED);
+                }
                 System.out.println(e.getMessage());
-                continue;
             }
         }
     }
